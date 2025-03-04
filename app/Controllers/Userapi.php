@@ -5,28 +5,76 @@ use App\Models\UserModel;
 
 class UserApi extends BaseController{
     use ResponseTrait;
+    private $model;
+
+    public function __construct()
+    {
+        $this->model = new UserModel;
+    }
 
     public function index(){
-        $this->response->setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
-        $this->response->setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-        $this->response->setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        $data = $this->model->findAll();
+        return $this->respond($data,200);
+    }
 
-        $userModel = new UserModel();
-        $buku = $userModel->findAll();
+    public function create(){
+        $data = $this->request->getPost();
+        
+        if(!$this->model->insert($data)){
+            return $this->fail($this->model->errors());
+        }
 
-        if ($buku) {
-            return $this->respond([
-            'status' => 'Success',
-            'message' => 'Data Berhasil Diambil',
-            'data' => $buku
-            ], 200);
-        } else {
-            return $this->respond([
-                'status' => 'Error',
-                'message' => 'Data Tidak Ditemukan',
-                'data' => []
-                ], 404);
-        }   
+        $response = [
+            'status' => 200,
+            'error' => null,
+            'message' => [
+            'success' => 'Berhasil Menambahkan Data'
+            ]
+        ];
+        return $this->respond($response);
+    }
+
+    public function update($id)
+{
+    $data = $this->request->getRawInput();
+    
+    $existingData = $this->model->where('id_user', $id)->first();
+    if (!$existingData) {
+        return $this->failNotFound('Data tidak ditemukan');
+    }
+
+    if (!$this->model->update($id, $data)) {
+        return $this->fail($this->model->errors());
+    }
+
+    $response = [
+        'status' => 200,
+        'error' => null,
+        'message' => [
+            'success' => 'Berhasil Memperbarui Data'
+        ]
+    ];
+    
+    return $this->respond($response);
+}
+
+    public function delete($id){
+        if (!$this->model->where('id_user', $id)) {
+            return $this->failNotFound('Data tidak ditemukan');
+        }
+
+        if (!$this->model->delete($id)) {
+            return $this->fail('Gagal menghapus data');
+        }
+
+        $response = [
+            'status' => 200,
+            'error' => null,
+            'message' => [
+            'success' => 'Berhasil Menghapus Data'
+            ]
+        ];
+        return $this->respondDeleted($response);
     }
 }
 ?>
