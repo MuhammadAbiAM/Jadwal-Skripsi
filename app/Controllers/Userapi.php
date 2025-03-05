@@ -17,6 +17,17 @@ class UserApi extends BaseController{
         return $this->respond($data,200);
     }
 
+    public function show($id){
+        $data = $this->model->where('id_user', $id)->first();
+
+        if (!$data) {
+            return $this->failNotFound('Data tidak ditemukan');
+        }
+
+        return $this->respond($data, 200);
+    }
+
+
     public function create(){
         $data = $this->request->getPost();
         
@@ -51,7 +62,7 @@ class UserApi extends BaseController{
         'status' => 200,
         'error' => null,
         'message' => [
-            'success' => 'Berhasil Memperbarui Data'
+        'success' => 'Berhasil Memperbarui Data'
         ]
     ];
     

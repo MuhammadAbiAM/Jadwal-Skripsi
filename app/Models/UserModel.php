@@ -8,7 +8,7 @@ class UserModel extends Model {
     protected $allowedFields = [
         'username', 
         'password', 
-        'status'
+        'role'
     ];
 }
 ?>
