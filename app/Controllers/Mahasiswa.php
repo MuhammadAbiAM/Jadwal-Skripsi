@@ -52,7 +52,7 @@ class Mahasiswa extends BaseController
             'email' => $this->request->getPost('email')
         ];
 
-        $id = $mahasiswaModel->insert($data);
+        $npm = $mahasiswaModel->insert($data);
         if (!$mahasiswaModel->save($data)) {
             return $this->fail([
                 'status' => 400,
