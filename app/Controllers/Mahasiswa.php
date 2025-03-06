@@ -26,7 +26,7 @@ class Mahasiswa extends BaseController
         $data = $this->mahasiswaModel->where('npm', $id)->first();
 
         if (!$data) {
-            return $this->failNotFound('Data tidak ditemukan');
+            return $this->failNotFound('Data ruangan tidak ditemukan');
         }
 
         return $this->respond($data, 200);
