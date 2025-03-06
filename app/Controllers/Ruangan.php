@@ -34,43 +34,28 @@ class Ruangan extends BaseController
 
     public function create()
     {
+        $ruanganModel = new RuanganModel();
+        
+        $kode_ruangan = $this->request->getPost('kode_ruangan');
+
         $data = [
+            'kode_ruangan' => $kode_ruangan,
             'nama_ruangan' => $this->request->getPost('nama_ruangan'),
         ];
 
-        if ($this->ruanganModel->insert($data)) {
-            return $this->respondCreated([
-                'status' => 200,
-                'message' => 'Data ruangan berhasil ditambahkan',
-                'data' => $data
+        $kode_ruangan = $ruanganModel->insert($data);
+        if (!$ruanganModel->save($data)) {
+            return $this->fail([
+                'status' => 400,
+                'message' => 'Gagal menambahkan data ruangan',
+                'errors' => $ruanganModel->errors()
             ]);
-        } else {
-            return $this->fail('Gagal menambahkan data ruangan', 400);
         }
-    }
-
-    public function update($kode_ruangan)
-    {
-        $ruanganLama = $this->ruanganModel->find($kode_ruangan);
-        if (!$ruanganLama) {
-            return $this->failNotFound('Data ruangan tidak ditemukan');
-        }
-
-        $input = $this->request->getRawInput();
-
-        $data = [
-            'nama_ruangan' => $input['nama_ruangan'] ?? $ruanganLama['nama_ruangan'],
-        ];
-
-        if ($this->ruanganModel->update($kode_ruangan, $data)) {
-            return $this->respond([
-                'status' => 200,
-                'message' => 'Data ruangan berhasil diperbarui',
-                'data' => $data
-            ]);
-        } else {
-            return $this->fail('Gagal memperbarui data ruangan', 400);
-        }
+        return $this->respondCreated([
+            'status' => 200,
+            'message' => 'Data ruangan berhasil ditambahkan',
+            'data' => $data
+        ]);
     }
 
     public function delete($kode_ruangan)
