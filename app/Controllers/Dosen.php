@@ -45,7 +45,7 @@ class Dosen extends BaseController
         $data = [
             'nidn' => $nidn,
             'nama_dosen' => $this->request->getPost('nama_dosen'),
-            'jurusan' => $this->request->getPost('jurusan'),
+            'program_studi' => $this->request->getPost('program_studi'),
             'email' => $this->request->getPost('email')
         ];
 

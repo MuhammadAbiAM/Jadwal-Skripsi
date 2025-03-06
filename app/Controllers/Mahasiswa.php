@@ -46,7 +46,6 @@ class Mahasiswa extends BaseController
         $data = [
             'npm' => $npm,
             'nama_mahasiswa' => $this->request->getPost('nama_mahasiswa'),
-            'jurusan' => $this->request->getPost('jurusan'),
             'program_studi' => $this->request->getPost('program_studi'),
             'judul_skripsi' => $this->request->getPost('judul_skripsi'),
             'email' => $this->request->getPost('email')
@@ -95,7 +94,6 @@ class Mahasiswa extends BaseController
         $dataUpdate = [
             'npm' => $npm,
             'nama_mahasiswa' => $input['nama_mahasiswa'] ?? $mahasiswaLama['nama_mahasiswa'],
-            'jurusan' => $input['jurusan'] ?? $mahasiswaLama['jurusan'],
             'program_studi' => $input['program_studi'] ?? $mahasiswaLama['program_studi'],
             'judul_skripsi' => $input['judul_skripsi'] ?? $mahasiswaLama['judul_skripsi'],
             'email' => $input['email'] ?? $mahasiswaLama['email']

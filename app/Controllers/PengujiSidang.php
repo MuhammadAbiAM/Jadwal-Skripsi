@@ -31,22 +31,5 @@ class PengujiSidang extends BaseController
 
         return $this->respond($data, 200);
     }
-
-    // public function create()
-    // {
-    //     $data = [
-    //         'peran' => $this->request->getPost('peran')
-    //     ];
-
-    //     if ($this->pengujiSidangModel->insert($data)) {
-    //         return $this->respondCreated([
-    //             'status' => 200,
-    //             'message' => 'Data penguji berhasil ditambahkan',
-    //             'data' => $data
-    //         ]);
-    //     } else {
-    //         return $this->fail('Gagal menambahkan data penguji', 400);
-    //     }
-    // }
 }
 ?>

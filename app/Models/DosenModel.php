@@ -9,7 +9,7 @@ class DosenModel extends Model {
     protected $allowedFields = [
         'nidn',
         'nama_dosen',
-        'jurusan',
+        'program_studi',
         'email'
     ];
 }

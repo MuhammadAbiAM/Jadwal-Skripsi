@@ -21,9 +21,9 @@ class Ruangan extends BaseController
         return $this->respond($data, 200);
     }
 
-    public function show($id_ruangan)
+    public function show($kode_ruangan)
     {
-        $data = $this->ruanganModel->where('id_ruangan', $id_ruangan)->first();
+        $data = $this->ruanganModel->where('kode_ruangan', $kode_ruangan)->first();
 
         if (!$data) {
             return $this->failNotFound('Data ruangan tidak ditemukan');
@@ -36,7 +36,6 @@ class Ruangan extends BaseController
     {
         $data = [
             'nama_ruangan' => $this->request->getPost('nama_ruangan'),
-            'lokasi' => $this->request->getPost('lokasi')
         ];
 
         if ($this->ruanganModel->insert($data)) {
@@ -50,9 +49,9 @@ class Ruangan extends BaseController
         }
     }
 
-    public function update($id_ruangan)
+    public function update($kode_ruangan)
     {
-        $ruanganLama = $this->ruanganModel->find($id_ruangan);
+        $ruanganLama = $this->ruanganModel->find($kode_ruangan);
         if (!$ruanganLama) {
             return $this->failNotFound('Data ruangan tidak ditemukan');
         }
@@ -61,10 +60,9 @@ class Ruangan extends BaseController
 
         $data = [
             'nama_ruangan' => $input['nama_ruangan'] ?? $ruanganLama['nama_ruangan'],
-            'lokasi' => $input['lokasi'] ?? $ruanganLama['lokasi']
         ];
 
-        if ($this->ruanganModel->update($id_ruangan, $data)) {
+        if ($this->ruanganModel->update($kode_ruangan, $data)) {
             return $this->respond([
                 'status' => 200,
                 'message' => 'Data ruangan berhasil diperbarui',
@@ -75,10 +73,10 @@ class Ruangan extends BaseController
         }
     }
 
-    public function delete($id_ruangan)
+    public function delete($kode_ruangan)
     {
-        if ($this->ruanganModel->find($id_ruangan)) {
-            $this->ruanganModel->delete($id_ruangan);
+        if ($this->ruanganModel->find($kode_ruangan)) {
+            $this->ruanganModel->delete($kode_ruangan);
             return $this->respondDeleted([
                 'status' => 200,
                 'message' => 'Data ruangan berhasil dihapus'

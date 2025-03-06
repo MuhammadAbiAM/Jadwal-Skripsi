@@ -7,8 +7,7 @@ class MahasiswaModel extends Model {
     protected $primaryKey = 'npm';
     protected $allowedFields = [
         'npm',
-        'nama_mahasiswa', 
-        'jurusan', 
+        'nama_mahasiswa',  
         'program_studi', 
         'judul_skripsi', 
         'email'
