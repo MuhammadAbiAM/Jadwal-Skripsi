@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
@@ -34,43 +34,38 @@ class JadwalSidang extends BaseController
 
     public function create()
     {
-        $data = [
-            'waktu_sidang' => $this->request->getPost('waktu_sidang')
-        ];
+        $jadwalSidangModel = new JadwalSidangModel();
 
-        if ($this->jadwalSidangModel->insert($data)) {
-            return $this->respondCreated([
-                'status' => 200,
-                'message' => 'Jadwal sidang berhasil ditambahkan',
-                'data' => $data
+        $npm = $this->request->getPost('npm');
+        $kode_ruangan = $this->request->getPost('kode_ruangan');
+        $waktu_sidang = $this->request->getPost('waktu_sidang');
+
+        if ($jadwalSidangModel->where('npm', $npm)->countAllResults() > 0) {
+            return $this->fail([
+                'status' => 400,
+                'message' => 'Mahasiswa dengan NPM ini sudah memiliki jadwal sidang'
             ]);
-        } else {
-            return $this->fail('Gagal menambahkan jadwal sidang', 400);
         }
-    }
-
-    public function update($id_jadwal)
-    {
-        $jadwalLama = $this->jadwalSidangModel->find($id_jadwal);
-        if (!$jadwalLama) {
-            return $this->failNotFound('Data jadwal tidak ditemukan');
-        }
-
-        $input = $this->request->getRawInput();
 
         $data = [
-            'waktu_sidang' => $input['waktu_sidang'] ?? $jadwalLama['waktu_sidang']
+            'npm' => $npm,
+            'kode_ruangan' => $kode_ruangan,
+            'waktu_sidang' => $waktu_sidang
         ];
 
-        if ($this->jadwalSidangModel->update($id_jadwal, $data)) {
-            return $this->respond([
-                'status' => 200,
-                'message' => 'Jadwal sidang berhasil diperbarui',
-                'data' => $data
+        if (!$jadwalSidangModel->insert($data)) {
+            return $this->fail([
+                'status' => 400,
+                'message' => 'Gagal menambahkan data jadwal sidang',
+                'errors' => $jadwalSidangModel->errors()
             ]);
-        } else {
-            return $this->fail('Gagal memperbarui jadwal sidang', 400);
         }
+
+        return $this->respondCreated([
+            'status' => 200,
+            'message' => 'Data jadwal sidang berhasil ditambahkan',
+            'data' => $data
+        ]);
     }
 
     public function delete($id_jadwal)
@@ -86,4 +81,3 @@ class JadwalSidang extends BaseController
         }
     }
 }
-?>

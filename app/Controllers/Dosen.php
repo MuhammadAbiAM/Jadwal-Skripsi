@@ -49,7 +49,7 @@ class Dosen extends BaseController
             'email' => $this->request->getPost('email')
         ];
 
-        $nidn = $dosenModel->insert($data);
+        $nidn = $dosenModel->insert($data); 
         if (!$dosenModel->save($data)) {
             return $this->fail([
                 'status' => 200,

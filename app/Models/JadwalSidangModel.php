@@ -7,6 +7,8 @@ class JadwalSidangModel extends Model {
     protected $table = 'jadwal_sidang';
     protected $primaryKey = 'id_jadwal';
     protected $allowedFields = [
+        'npm',
+        'kode_ruangan',
         'waktu_sidang'
     ];
 }
