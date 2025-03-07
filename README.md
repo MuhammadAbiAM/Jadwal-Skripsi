@@ -1,60 +1,78 @@
-# CodeIgniter 4 Framework
+# CodeIgniter Installation Guide
 
-## What is CodeIgniter?
+## Prerequisites
+Sebelum menginstal CodeIgniter, pastikan sistem Anda memenuhi persyaratan berikut:
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+- **Web Server**: Apache/Nginx dengan mod_rewrite diaktifkan
+- **PHP**: Versi 7.4 atau lebih baru
+- **Database**: MySQL, PostgreSQL, SQLite, atau lainnya yang didukung
+- **Composer** (Opsional, untuk mengelola dependensi)
 
-This repository holds the distributable version of the framework.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Installation Steps
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+### 1. Download CodeIgniter
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+Anda dapat mengunduh CodeIgniter melalui beberapa cara:
 
-## Important Change with index.php
+#### a. Menggunakan Composer (Disarankan)
+```bash
+composer create-project codeigniter4/appstarter my_project
+cd my_project
+```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+#### b. Mengunduh secara Manual
+1. Unduh CodeIgniter dari [CodeIgniter Official Website](https://codeigniter.com/download).
+2. Ekstrak file ke dalam folder proyek Anda.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+### 2. Konfigurasi Dasar
 
-**Please** read the user guide for a better explanation of how CI4 works!
+#### a. Atur `baseURL`
+Buka file `app/Config/App.php` dan sesuaikan bagian berikut:
+```php
+public $baseURL = 'http://localhost/my_project/';
+```
 
-## Repository Management
+#### b. Konfigurasi Database
+Jika menggunakan database, ubah pengaturan pada `app/Config/Database.php`:
+```php
+public $default = [
+    'DSN'      => '',
+    'hostname' => 'localhost',
+    'username' => 'root',
+    'password' => '',
+    'database' => 'nama_database',
+    'DBDriver' => 'MySQLi',
+];
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+### 3. Jalankan Server
+Gunakan PHP built-in server untuk menjalankan aplikasi:
+```bash
+php spark serve
+```
+Akses aplikasi di browser melalui `http://localhost:8080`.
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## Additional Setup
 
-## Contributing
+### 1. Mengaktifkan `mod_rewrite` (Jika Menggunakan Apache)
+Pastikan file `.htaccess` tersedia dan konfigurasi `AllowOverride All` telah diaktifkan dalam Apache.
 
-We welcome contributions from the community.
+### 2. Menggunakan Environment File
+Salin `.env.example` menjadi `.env` dan sesuaikan konfigurasi yang diperlukan:
+```bash
+cp env .env
+```
+Kemudian aktifkan mode development:
+```bash
+CI_ENVIRONMENT = development
+```
 
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
+## Troubleshooting
 
-## Server Requirements
+- **Error: Page Not Found**: Pastikan `mod_rewrite` diaktifkan jika menggunakan Apache.
+- **Database Connection Error**: Cek kembali kredensial database pada `app/Config/Database.php`.
+- **Permission Issues**: Pastikan folder `writable/` memiliki izin yang sesuai (`chmod -R 777 writable/`).
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+## More Information
+Untuk dokumentasi lebih lanjut, kunjungi [CodeIgniter User Guide](https://codeigniter.com/user_guide/).
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
